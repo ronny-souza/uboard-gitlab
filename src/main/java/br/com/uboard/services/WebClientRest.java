@@ -1,6 +1,7 @@
 package br.com.uboard.services;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +47,13 @@ public class WebClientRest {
 		for (Map.Entry<String, String> entry : newHeaders.entrySet()) {
 			headers.set(entry.getKey(), entry.getValue());
 		}
+
+		return headers;
+	}
+
+	public Map<String, String> getAuthorizationHeaders(String token) {
+		Map<String, String> headers = new HashMap<>();
+		headers.put("Authorization", "Bearer " + token);
 
 		return headers;
 	}
