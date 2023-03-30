@@ -1,8 +1,5 @@
 package br.com.uboard.services;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +19,8 @@ public class UserService {
 	}
 
 	public UserDTO synchronizeUser(CredentialsDTO credentialsDTO) throws Exception {
-		Map<String, String> headers = new HashMap<>();
-		headers.put("Authorization", "Bearer " + credentialsDTO.getToken());
-
-		HttpEntity<Object> httpEntity = this.webClient.getHttpEntity(headers);
+		HttpEntity<Object> httpEntity = this.webClient
+				.getHttpEntity(this.webClient.getAuthorizationHeaders(credentialsDTO.getToken()));
 
 		String url = new StringBuilder().append(credentialsDTO.getAddress())
 				.append(this.webClient.getDefaultApiPrefix()).append(GitlabAPIEnum.USER.getPath()).toString();
@@ -37,6 +32,5 @@ public class UserService {
 		}
 
 		return response.getBody();
-
 	}
 }
