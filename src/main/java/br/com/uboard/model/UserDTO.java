@@ -20,10 +20,6 @@ public class UserDTO implements Serializable {
 	@SerializedName("created_at")
 	private String createdAt;
 
-	public UserDTO() {
-
-	}
-
 	public Long getId() {
 		return id;
 	}
