@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import br.com.uboard.exceptions.SynchronizeUserException;
 import br.com.uboard.model.CredentialsDTO;
 import br.com.uboard.model.UserDTO;
 import br.com.uboard.model.enums.GitlabAPIEnum;
@@ -18,7 +19,7 @@ public class UserService {
 		this.webClient = new WebClientRest();
 	}
 
-	public UserDTO synchronizeUser(CredentialsDTO credentialsDTO) throws Exception {
+	public UserDTO synchronizeUser(CredentialsDTO credentialsDTO) throws SynchronizeUserException {
 		HttpEntity<Object> httpEntity = this.webClient
 				.getHttpEntity(this.webClient.getAuthorizationHeaders(credentialsDTO.getToken()));
 
@@ -28,7 +29,7 @@ public class UserService {
 		ResponseEntity<UserDTO> response = this.webClient.get(url, httpEntity, UserDTO.class);
 
 		if (response.getStatusCode() != HttpStatus.OK) {
-			throw new Exception("Error on sync Gitlab User");
+			throw new SynchronizeUserException("Error on sync Gitlab User");
 		}
 
 		return response.getBody();

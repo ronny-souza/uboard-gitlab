@@ -10,10 +10,6 @@ public class CredentialsDTO implements Serializable {
 	private String token;
 	private String userUUID;
 
-	public CredentialsDTO() {
-
-	}
-
 	public String getAddress() {
 		return address;
 	}

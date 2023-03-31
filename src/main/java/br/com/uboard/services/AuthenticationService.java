@@ -12,10 +12,6 @@ public class AuthenticationService {
 
 	private Map<String, CredentialsDTO> credentialsPool = new HashMap<>();
 
-	public AuthenticationService() {
-
-	}
-
 	public void add(CredentialsDTO credentialsDTO) {
 		if (credentialsPool.containsKey(credentialsDTO.getUserUUID())) {
 			credentialsPool.replace(credentialsDTO.getUserUUID(), credentialsDTO);
