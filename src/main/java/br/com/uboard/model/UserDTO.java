@@ -13,6 +13,8 @@ public class UserDTO implements Serializable {
 	private String name;
 	private String state;
 	private String email;
+	private String address;
+	private String token;
 
 	@SerializedName("avatar_url")
 	private String avatarUrl;
@@ -66,6 +68,22 @@ public class UserDTO implements Serializable {
 
 	public void setAvatarUrl(String avatarUrl) {
 		this.avatarUrl = avatarUrl;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	public String getCreatedAt() {
