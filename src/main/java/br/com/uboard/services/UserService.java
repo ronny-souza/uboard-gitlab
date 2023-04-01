@@ -32,6 +32,8 @@ public class UserService {
 			throw new SynchronizeUserException("Error on sync Gitlab User");
 		}
 
+		response.getBody().setAddress(credentialsDTO.getAddress());
+		response.getBody().setToken(credentialsDTO.getToken());
 		return response.getBody();
 	}
 }
