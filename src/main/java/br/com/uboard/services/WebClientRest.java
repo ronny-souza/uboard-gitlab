@@ -31,6 +31,22 @@ public class WebClientRest {
 		return "/api/v4";
 	}
 
+	public String getPage(int page) {
+		return "page=" + page;
+	}
+
+	public HttpEntity<Object> getHttpEntity(String token) {
+		HttpHeaders httpHeaders = this.getDefaultHeaders(token);
+		return new HttpEntity<>(null, httpHeaders);
+	}
+
+	private HttpHeaders getDefaultHeaders(String token) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+		headers.set("Authorization", "Bearer " + token);
+		return headers;
+	}
+
 	public HttpEntity<Object> getHttpEntity(Map<String, String> newHeaders) {
 		HttpHeaders httpHeaders = this.getHttpHeaders(newHeaders);
 		return new HttpEntity<>(null, httpHeaders);
@@ -76,6 +92,11 @@ public class WebClientRest {
 
 	public <T> ResponseEntity<T> get(String uri, ParameterizedTypeReference<T> responseType) {
 		return this.restTemplate.exchange(uri, HttpMethod.GET, getHttpEntity(), responseType);
+	}
+
+	public <T> ResponseEntity<T> get(String uri, HttpEntity<Object> httpEntity,
+			ParameterizedTypeReference<T> responseType) {
+		return this.restTemplate.exchange(uri, HttpMethod.GET, httpEntity, responseType);
 	}
 
 	public <T, U> ResponseEntity<T> post(String uri, Class<T> model, U body) {

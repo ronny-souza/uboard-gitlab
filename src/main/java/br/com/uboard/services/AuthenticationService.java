@@ -10,7 +10,15 @@ import br.com.uboard.model.CredentialsDTO;
 @Service
 public class AuthenticationService {
 
-	private Map<String, CredentialsDTO> credentialsPool = new HashMap<>();
+	private Map<Long, CredentialsDTO> credentialsPool = new HashMap<>();
+
+	public void process(CredentialsDTO credentialsDTO) {
+		if (credentialsDTO.getRemovable()) {
+			this.remove(credentialsDTO.getUserUUID());
+		} else {
+			this.add(credentialsDTO);
+		}
+	}
 
 	public void add(CredentialsDTO credentialsDTO) {
 		if (credentialsPool.containsKey(credentialsDTO.getUserUUID())) {
@@ -20,7 +28,7 @@ public class AuthenticationService {
 		}
 	}
 
-	public void remove(String userUUID) {
+	public void remove(Long userUUID) {
 		if (credentialsPool.containsKey(userUUID)) {
 			credentialsPool.remove(userUUID);
 		}
