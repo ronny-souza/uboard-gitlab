@@ -11,7 +11,6 @@ public class UserDTO implements Serializable {
 	private Long id;
 	private String username;
 	private String name;
-	private String state;
 	private String email;
 	private String address;
 	private String token;
@@ -44,14 +43,6 @@ public class UserDTO implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
 	}
 
 	public String getEmail() {
