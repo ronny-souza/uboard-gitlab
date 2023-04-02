@@ -20,20 +20,22 @@ public class UserService {
 	}
 
 	public UserDTO synchronizeUser(CredentialsDTO credentialsDTO) throws SynchronizeUserException {
-		HttpEntity<Object> httpEntity = this.webClient
-				.getHttpEntity(this.webClient.getAuthorizationHeaders(credentialsDTO.getToken()));
+		HttpEntity<Object> httpEntity = this.webClient.getHttpEntity(credentialsDTO.getToken());
 
 		String url = new StringBuilder().append(credentialsDTO.getAddress())
 				.append(this.webClient.getDefaultApiPrefix()).append(GitlabAPIEnum.USER.getPath()).toString();
 
 		ResponseEntity<UserDTO> response = this.webClient.get(url, httpEntity, UserDTO.class);
 
-		if (response.getStatusCode() != HttpStatus.OK) {
+		if (response.getStatusCode() != HttpStatus.OK || response.getBody() == null) {
 			throw new SynchronizeUserException("Error on sync Gitlab User");
 		}
 
-		response.getBody().setAddress(credentialsDTO.getAddress());
-		response.getBody().setToken(credentialsDTO.getToken());
-		return response.getBody();
+		UserDTO responseBody = response.getBody();
+		if (responseBody != null) {
+			responseBody.setAddress(credentialsDTO.getAddress());
+			responseBody.setToken(credentialsDTO.getToken());
+		}
+		return responseBody;
 	}
 }

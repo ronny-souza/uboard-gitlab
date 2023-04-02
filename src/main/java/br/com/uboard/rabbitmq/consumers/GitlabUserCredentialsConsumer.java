@@ -23,7 +23,7 @@ public class GitlabUserCredentialsConsumer {
 	@RabbitListener(queues = RabbitQueues.GITLAB_USER_CREDENTIALS)
 	public void receive(CredentialsDTO credentialsDTO) {
 		try {
-			this.authenticationService.add(credentialsDTO);
+			this.authenticationService.process(credentialsDTO);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 		}

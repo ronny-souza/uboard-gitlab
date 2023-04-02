@@ -8,7 +8,8 @@ public class CredentialsDTO implements Serializable {
 
 	private String address;
 	private String token;
-	private String userUUID;
+	private boolean removable;
+	private Long userUUID;
 
 	public String getAddress() {
 		return address;
@@ -26,11 +27,19 @@ public class CredentialsDTO implements Serializable {
 		this.token = token;
 	}
 
-	public String getUserUUID() {
+	public boolean getRemovable() {
+		return removable;
+	}
+
+	public void setRemovable(boolean removable) {
+		this.removable = removable;
+	}
+
+	public Long getUserUUID() {
 		return userUUID;
 	}
 
-	public void setUserUUID(String userUUID) {
+	public void setUserUUID(Long userUUID) {
 		this.userUUID = userUUID;
 	}
 
