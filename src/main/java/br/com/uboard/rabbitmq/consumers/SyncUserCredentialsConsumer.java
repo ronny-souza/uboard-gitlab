@@ -1,5 +1,7 @@
 package br.com.uboard.rabbitmq.consumers;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -10,20 +12,20 @@ import br.com.uboard.rabbitmq.RabbitQueues;
 import br.com.uboard.services.AuthenticationService;
 
 @Component
-public class GitlabUserCredentialsConsumer {
+public class SyncUserCredentialsConsumer {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(GitlabUserCredentialsConsumer.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SyncUserCredentialsConsumer.class);
 
 	private AuthenticationService authenticationService;
 
-	public GitlabUserCredentialsConsumer(AuthenticationService authenticationService) {
+	public SyncUserCredentialsConsumer(AuthenticationService authenticationService) {
 		this.authenticationService = authenticationService;
 	}
 
 	@RabbitListener(queues = RabbitQueues.GITLAB_USER_CREDENTIALS)
-	public void receive(CredentialsDTO credentialsDTO) {
+	public void receive(List<CredentialsDTO> credentialsList) {
 		try {
-			this.authenticationService.process(credentialsDTO);
+			this.authenticationService.process(credentialsList);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 		}
