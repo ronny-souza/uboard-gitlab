@@ -3,6 +3,8 @@ package br.com.uboard.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.security.auth.login.CredentialNotFoundException;
+
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -12,7 +14,6 @@ import org.springframework.stereotype.Service;
 import br.com.uboard.exceptions.SynchronizeProjectsException;
 import br.com.uboard.model.CredentialsDTO;
 import br.com.uboard.model.ProjectDTO;
-import br.com.uboard.model.SyncProjectDTO;
 import br.com.uboard.model.enums.GitlabAPIEnum;
 import br.com.uboard.model.enums.GitlabPaginationEnum;
 
@@ -20,13 +21,18 @@ import br.com.uboard.model.enums.GitlabPaginationEnum;
 public class ProjectService {
 
 	private WebClientRest webClient;
+	private AuthenticationService authenticationService;
 
-	public ProjectService() {
+	public ProjectService(AuthenticationService authenticationService) {
 		this.webClient = new WebClientRest();
+		this.authenticationService = authenticationService;
 	}
 
-	public SyncProjectDTO synchronizeProjects(CredentialsDTO credentialsDTO) throws SynchronizeProjectsException {
+	public List<ProjectDTO> synchronizeProjects(String userUUID)
+			throws SynchronizeProjectsException, CredentialNotFoundException {
 		List<ProjectDTO> projects = new ArrayList<>();
+		CredentialsDTO credentialsDTO = this.authenticationService.getCredentials(Long.valueOf(userUUID));
+
 		int currentPage = 1;
 
 		while (true) {
@@ -58,7 +64,7 @@ public class ProjectService {
 			currentPage++;
 		}
 
-		return new SyncProjectDTO(credentialsDTO.getUserUUID(), projects);
+		return projects;
 	}
 
 }
