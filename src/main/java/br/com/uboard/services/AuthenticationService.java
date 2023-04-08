@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.security.auth.login.CredentialNotFoundException;
+
 import org.springframework.stereotype.Service;
 
 import br.com.uboard.model.CredentialsDTO;
@@ -38,7 +40,17 @@ public class AuthenticationService {
 		}
 	}
 
-	public List<CredentialsDTO> getCredentials() {
+	public List<CredentialsDTO> listCredentials() {
 		return this.credentialsPool.values().stream().toList();
+	}
+
+	public CredentialsDTO getCredentials(Long userUUID) throws CredentialNotFoundException {
+		CredentialsDTO credentialsDTO = this.credentialsPool.getOrDefault(userUUID, null);
+
+		if (credentialsDTO == null) {
+			throw new CredentialNotFoundException(String.format("Credentials for user %d is not found", userUUID));
+		}
+
+		return credentialsDTO;
 	}
 }
