@@ -3,6 +3,8 @@ package br.com.uboard.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.security.auth.login.CredentialNotFoundException;
+
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -12,7 +14,6 @@ import org.springframework.stereotype.Service;
 import br.com.uboard.exceptions.SynchronizeGroupsException;
 import br.com.uboard.model.CredentialsDTO;
 import br.com.uboard.model.GroupDTO;
-import br.com.uboard.model.SyncGroupDTO;
 import br.com.uboard.model.enums.GitlabAPIEnum;
 import br.com.uboard.model.enums.GitlabPaginationEnum;
 
@@ -20,13 +21,18 @@ import br.com.uboard.model.enums.GitlabPaginationEnum;
 public class GroupService {
 
 	private WebClientRest webClient;
+	private AuthenticationService authenticationService;
 
-	public GroupService() {
+	public GroupService(AuthenticationService authenticationService) {
 		this.webClient = new WebClientRest();
+		this.authenticationService = authenticationService;
 	}
 
-	public SyncGroupDTO synchronizeGroups(CredentialsDTO credentialsDTO) throws SynchronizeGroupsException {
+	public List<GroupDTO> synchronizeGroups(String userUUID)
+			throws SynchronizeGroupsException, CredentialNotFoundException {
 		List<GroupDTO> groups = new ArrayList<>();
+		CredentialsDTO credentialsDTO = this.authenticationService.getCredentials(Long.valueOf(userUUID));
+
 		int currentPage = 1;
 
 		while (true) {
@@ -58,6 +64,6 @@ public class GroupService {
 			currentPage++;
 		}
 
-		return new SyncGroupDTO(credentialsDTO.getUserUUID(), groups);
+		return groups;
 	}
 }
