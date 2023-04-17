@@ -5,7 +5,8 @@ public enum GitlabAPIEnum {
 	USER("/user"),
 	USERS("/users"),
 	GROUPS("/groups"),
-	PROJECTS("/projects");
+	PROJECTS("/projects"),
+	MILESTONES("/milestones");
 
 	private String path;
 

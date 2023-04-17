@@ -26,6 +26,7 @@ public class SyncUserCredentialsConsumer {
 	public void receive(List<CredentialsDTO> credentialsList) {
 		try {
 			this.authenticationService.process(credentialsList);
+			LOGGER.debug(String.format("Receiving %d credentials to synchronize pool", credentialsList.size()));
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 		}

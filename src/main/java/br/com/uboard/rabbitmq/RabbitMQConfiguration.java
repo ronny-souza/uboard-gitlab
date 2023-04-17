@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfiguration {
 
+	private static final String X_MESSAGE_TTL = "x-message-ttl";
 	private AmqpAdmin amqpAdmin;
 
 	public RabbitMQConfiguration(AmqpAdmin amqpAdmin) {
@@ -26,9 +27,17 @@ public class RabbitMQConfiguration {
 	}
 
 	@Bean
-	public Queue syncGitlabProjectsQueue() {
-		Queue queue = QueueBuilder.durable(RabbitQueues.GITLAB_SYNC_PROJECTS)
-				.withArgument("x-message-ttl", TimeUnit.MINUTES.toMillis(10)).build();
+	public Queue syncGitlabGroupMilestonesQueue() {
+		Queue queue = QueueBuilder.durable(RabbitQueues.GITLAB_SYNC_GROUP_MILESTONES)
+				.withArgument(X_MESSAGE_TTL, TimeUnit.MINUTES.toMillis(10)).build();
+		this.amqpAdmin.declareQueue(queue);
+		return queue;
+	}
+
+	@Bean
+	public Queue syncGitlabProjectMilestonesQueue() {
+		Queue queue = QueueBuilder.durable(RabbitQueues.GITLAB_SYNC_PROJECT_MILESTONES)
+				.withArgument(X_MESSAGE_TTL, TimeUnit.MINUTES.toMillis(10)).build();
 		this.amqpAdmin.declareQueue(queue);
 		return queue;
 	}
