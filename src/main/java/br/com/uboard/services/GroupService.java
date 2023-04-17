@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.security.auth.login.CredentialNotFoundException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,8 @@ import br.com.uboard.model.enums.GitlabPaginationEnum;
 
 @Service
 public class GroupService {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(GroupService.class);
 
 	private WebClientRest webClient;
 	private AuthenticationService authenticationService;
@@ -64,6 +68,7 @@ public class GroupService {
 			currentPage++;
 		}
 
+		LOGGER.debug(String.format("Returning %d groups", groups.size()));
 		return groups;
 	}
 }
